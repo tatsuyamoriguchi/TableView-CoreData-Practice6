@@ -41,6 +41,17 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var toDoText: UILabel!
     
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBAction func edit(_ sender: Any) {
+        tableView.isEditing = !tableView.isEditing
+        
+        switch tableView.isEditing {
+        case true:
+            editButton.title = "Done"
+        case false:
+            editButton.title = "Edit"
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +71,9 @@ class ViewController: UIViewController {
     
     @IBAction func addButtonTapped(_ sender: Any) {
         insertNewTask()
+        isImportantInput.setOn(false, animated: true)
+        isUrgentInput.setOn(false, animated: true)
+        isDoneInput.setOn(false, animated: true)
         
     }
 
@@ -102,7 +116,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             tasks.remove(at: indexPath.row)
             // Update the table view
             tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.deleteRows(at: [indexPath], with: .right)
             tableView.endUpdates()
         }
     }
@@ -111,10 +125,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         let task = tasks[sourceIndexPath.row]
         tasks.remove(at: sourceIndexPath.row)
-        //tasks.insert(task, at: to.row)
         tasks.insert(task, at: destinationIndexPath.row)
     }
     
+    // Allows reordering of cells
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
