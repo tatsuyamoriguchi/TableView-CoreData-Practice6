@@ -70,10 +70,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func addButtonTapped(_ sender: Any) {
+        if toDoInput.text == "" {
+          inputAlert()
+        } else {
+        
         insertNewTask()
+        
         isImportantInput.setOn(false, animated: true)
         isUrgentInput.setOn(false, animated: true)
         isDoneInput.setOn(false, animated: true)
+        }
+    }
+    
+    func inputAlert() {
+        let alert = UIAlertController(title: "Alert!", message: "Please Type a To-Do.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+            (action) in alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
         
     }
 
