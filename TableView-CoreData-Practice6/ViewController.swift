@@ -236,6 +236,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.deleteRows(at: [indexPath], with: .right)
             tableView.endUpdates()
              */
+        
         }
         tableView.reloadData()
 
@@ -243,13 +244,38 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
+
+        
         let task = tasks[sourceIndexPath.row]
+        
         tasks.remove(at: sourceIndexPath.row)
         tasks.insert(task, at: destinationIndexPath.row)
+
+
+        /*
+         
+         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+         (UIApplication.shared.delegate as! AppDelegate).saveContext()
+         
+         
+        // Reload the data
+        do {
+            tasks = try context.fetch(Task.fetchRequest())
+        } catch {
+            print("Fetching Failed for delete")
+        }
+        
+        tableView.reloadData()
+*/
+    
     }
     
     // Allows reordering of cells
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+
+
+
+        
         return true
     }
 }
