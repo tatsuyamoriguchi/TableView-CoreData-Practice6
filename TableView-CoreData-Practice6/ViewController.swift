@@ -50,7 +50,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var saveButton: UIButton!
 
     
-    @IBAction func edit(_ sender: Any) {
+/*    @IBAction func edit(_ sender: Any) {
         tableView.isEditing = !tableView.isEditing
         
         switch tableView.isEditing {
@@ -63,6 +63,7 @@ class ViewController: UIViewController {
 
         }
     }
+*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,27 +73,23 @@ class ViewController: UIViewController {
         
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        // For Vore Data, initialize managedObjectContext
+        // For Core Data, initialize managedObjectContext
         managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        // Get the data from core data
-        getData()
-        
-        // Reload the table view
-        tableView.reloadData()
-    }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+   override func viewWillAppear(_ animated: Bool) {
+    
+    getData()
+    tableView.reloadData()
+    
     }
+
+
     
     @IBAction func addButtonTapped(_ sender: Any) {
-        
         
         // Show an alert if no toDoInput text.
         if toDoInput.text == "" {
@@ -100,7 +97,11 @@ class ViewController: UIViewController {
             inputAlert()
             
         } else {
+            let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            //let task = Task(context: managedObjectContext)
+            
             let taskItem = Task(context: managedObjectContext)
+            
             
             taskItem.toDo = toDoInput.text
             taskItem.isImportant = isImportantInput.isOn
@@ -109,21 +110,21 @@ class ViewController: UIViewController {
 
             insertNewTask()
             
-            // Reload the table view
-            getData()
-    
+            // Set switches back to default, False, for new input
+            isImportantInput.setOn(false, animated: true)
+            isUrgentInput.setOn(false, animated: true)
+            isDoneInput.setOn(false, animated: true)
+            toDoInput.text = ""
+        
         }
         
+        
+        // Reload the table view
+        getData()
         tableView.reloadData()
-
-        // Set switches back to default, False, for new input
-        isImportantInput.setOn(false, animated: true)
-        isUrgentInput.setOn(false, animated: true)
-        isDoneInput.setOn(false, animated: true)
-        toDoInput.text = ""
-
         
     }
+    
     
     func inputAlert() {
         let alert = UIAlertController(title: "Alert!", message: "Please Type a To-Do.", preferredStyle: UIAlertControllerStyle.alert)
@@ -159,34 +160,39 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell")
+        
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell")
+        let cell = UITableViewCell()
 
         let task = tasks[indexPath.row]
      
         
-        if task.isDone {
-            cell?.textLabel?.text = task.toDo!
-            cell?.textLabel?.textColor = UIColor.lightGray
+        if task.isDone == true {
+            cell.textLabel?.text = task.toDo!
+            cell.textLabel?.textColor = UIColor.lightGray
         
+        
+        }else if task.isImportant == true && task.isUrgent == true {
+        
+            cell.textLabel?.text = "⭐️\(task.toDo!)"
+            
+            cell.textLabel?.textColor = UIColor.red
+
+        }else if task.isImportant == true && task.isUrgent == false {
+        
+            cell.textLabel?.text = "⭐️\(task.toDo!)"
+            
+        }else if task.isImportant == false && task.isUrgent == true {
+        
+            cell.textLabel?.text = task.toDo!
+            
+            cell.textLabel?.textColor = UIColor.red
         }else{
         
-            if task.isImportant && task.isUrgent {
-                cell?.textLabel?.text = "⭐️\(task.toDo!)"
-                cell?.textLabel?.textColor = UIColor.red
-
-            }else if task.isImportant && !task.isUrgent {
-                cell?.textLabel?.text = "⭐️\(task.toDo!)"
-                
-            }else if !task.isImportant && task.isUrgent {
-                cell?.textLabel?.text = task.toDo!
-                cell?.textLabel?.textColor = UIColor.red
-
-            }else{
-                cell?.textLabel?.text = task.toDo!
-            
-            }
+            cell.textLabel?.text = task.toDo
         }
-        return cell!
+        
+        return cell
     
     }
     
@@ -194,10 +200,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func getData() {
         // Fetch data from Core Data to viewWillappear
         
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         do {
-            tasks = try context.fetch(Task.fetchRequest())
+            tasks = try managedObjectContext.fetch(Task.fetchRequest())
         }catch {
             print("FetchingFailed for adding")
         }
@@ -211,21 +218,32 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+        //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+        let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         if editingStyle == .delete {
             let task = tasks[indexPath.row]
-            context.delete(task)
+            //context.delete(task)
+            managedObjectContext.delete(task)
+            
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
             
+          
+            /*
             // Reload the data
             do {
-                tasks = try context.fetch(Task.fetchRequest())
+                //tasks = try context.fetch(Task.fetchRequest())
+                tasks = try managedObjectContext.fetch(Task.fetchRequest())
+
             } catch {
                 print("Fetching Failed for delete")
             }
+ */
             
+            getData()
+            tableView.reloadData()
         
             
             /*
@@ -238,10 +256,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
              */
         
         }
-        tableView.reloadData()
 
     }
     
+
+
+/*
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
 
@@ -278,5 +298,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         return true
     }
-}
+*/
+ 
+ }
 
