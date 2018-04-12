@@ -16,6 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // Get the reference to our to view controller.
+        let controller = self.window!.rootViewController as! ViewController
+        
+        // Get the reference to the Managed Object Context from the presistent coordinator.
+        let context = self.persistentContainer.viewContext
+        
+        // Set the managed object context to the View Controller before it gets the view loaded.
+        controller.managedObjectContext = self.persistentContainer.viewContext
+        
         // Override point for customization after application launch.
         return true
     }
