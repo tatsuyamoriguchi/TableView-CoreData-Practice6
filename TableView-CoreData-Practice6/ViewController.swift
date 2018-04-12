@@ -11,27 +11,6 @@ import CoreData
 
 
 class ViewController: UIViewController {
-
-/*
-    var tasks: [(toDoInput:String, isImportantInput: Bool, isUrgentInput: Bool, isDoneInput: Bool)] = [
-        ("Research on Alpha Romeo Giulia quallity.", false, false, false),
-        ("Research on Alpha Romeo Giulia's cost.", false, false, false),
-        ("Research Alpha Romeo Giulia's dealer's reputation.", false, false, false),
-        ("Compare between cash vs. loan vs. lease for two years.", false, false, false),
-        ("Research on Toyota Hilander's resale value.", false, false, false),
-        ("Research on where to sell Hilander.", false, false, false),
-        ]
-*/
-
-/*        var tasks: [String] = [
-        "Research on Alpha Romeo Giulia quallity.",
-        "Research on Alpha Romeo Giulia's cost.",
-        "Research Alpha Romeo Giulia's dealer's reputation.",
-        "Compare between cash vs. loan vs. lease for two years.",
-        "Research on Toyota Hilander's resale value.",
-        "Research on where to sell Hilander."
-        ]
-*/
     
 
     // Declare a variable to be used across this class as Core Data
@@ -115,13 +94,13 @@ class ViewController: UIViewController {
             isUrgentInput.setOn(false, animated: true)
             isDoneInput.setOn(false, animated: true)
             toDoInput.text = ""
+
+            
+            // Reload the table view
+            getData()
+            tableView.reloadData()
         
         }
-        
-        
-        // Reload the table view
-        getData()
-        tableView.reloadData()
         
     }
     
@@ -140,13 +119,6 @@ class ViewController: UIViewController {
     func insertNewTask() {
 
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        
-/*        taskItem.append(toDoInput.text!)
-        let indexPath = IndexPath(row: taskItem.count - 1, section: 0)
-        tableView.beginUpdates()
-        tableView.insertRows(at: [indexPath], with: .automatic)
-        tableView.endUpdates()
-*/
         view.endEditing(true)
     }
 
@@ -200,7 +172,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func getData() {
         // Fetch data from Core Data to viewWillappear
         
-        //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         do {
@@ -219,8 +190,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
-        //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         if editingStyle == .delete {
@@ -230,75 +199,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
             
-          
-            /*
-            // Reload the data
-            do {
-                //tasks = try context.fetch(Task.fetchRequest())
-                tasks = try managedObjectContext.fetch(Task.fetchRequest())
 
-            } catch {
-                print("Fetching Failed for delete")
-            }
- */
-            
             getData()
             tableView.reloadData()
         
-            
-            /*
-            // remove it from table view where you swipe.
-            tasks.remove(at: indexPath.row)
-            // Update the table view
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .right)
-            tableView.endUpdates()
-             */
-        
         }
-
     }
     
-
-
-/*
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        
-
-        
-        let task = tasks[sourceIndexPath.row]
-        
-        tasks.remove(at: sourceIndexPath.row)
-        tasks.insert(task, at: destinationIndexPath.row)
-
-
-        /*
-         
-         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-         (UIApplication.shared.delegate as! AppDelegate).saveContext()
-         
-         
-        // Reload the data
-        do {
-            tasks = try context.fetch(Task.fetchRequest())
-        } catch {
-            print("Fetching Failed for delete")
-        }
-        
-        tableView.reloadData()
-*/
-    
-    }
-    
-    // Allows reordering of cells
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-
-
-
-        
-        return true
-    }
-*/
- 
  }
 
