@@ -44,6 +44,66 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
     }
 */
     
+    
+    
+    
+    // The fetched results controller instance variable with the pretended entity
+    // we want to fetch from the Core Data
+    var _fetchedResultsController: NSFetchedResultsController<Task>? = nil
+    
+    // The proxy variable to serve as a lazy getter to our getched results controller
+    var fetchedResultsController: NSFetchedResultsController<Task> {
+        // If the varibale is alreay initialized, return that instance.
+        if _fetchedResultsController != nil {
+            return _fetchedResultsController!
+        }
+        
+        
+        
+        // If not, build the required elements for the fetched results controller
+        
+        // First need to create a fetch request with the pretended type.
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        
+        // Set the batch size to a suitable number (optional)
+        fetchRequest.fetchBatchSize = 20
+        
+        // Create at least one sort order attribute and type (ascending/descending)
+        let sortDescriptor = NSSortDescriptor(key: "toDo", ascending: false)
+        
+        // Set the sort objects to the fetch request.
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        // Optionally, create a filter/predicate.
+        // The goal of this predicate is to fetch Tasks that are not yet completed.
+        let predicate = NSPredicate(format: "isDone == FALSE")
+        
+        // Set the created predicate to our fetch request.
+        fetchRequest.predicate = predicate
+        
+        // Create the fetched results controller instance with the defined attributes.
+        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+        
+        // Set the delegate of the fetched results controller to the view controller.
+        // with this get notified whenever occurs changes on the data.
+        aFetchedResultsController.delegate = self
+        
+        // Setting the created instance to the view controller instance.
+        _fetchedResultsController = aFetchedResultsController
+        
+        do {
+            // Perform the initial fetch to Core Data.
+            // After this step, the fetched results controller will only retrive more records if neccesary.
+            try _fetchedResultsController!.performFetch()
+        }catch{
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return _fetchedResultsController!
+        
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -126,61 +186,6 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
 
 
     
-    
-    // The fetched results controller instance variable with the pretended entity
-    // we want to fetch from the Core Data
-    var _fetchedResultsController: NSFetchedResultsController<Task>? = nil
-    
-    // The proxy variable to serve as a lazy getter to our getched results controller
-    var fetchedResultsController: NSFetchedResultsController<Task> {
-        // If the varibale is alreay initialized, return that instance.
-        if _fetchedResultsController != nil {
-            return _fetchedResultsController!
-        }
-        
-        // If not, build the required elements for the fetched results controller.
-        
-        // First need to create a fetch request with the pretended type.
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-        
-        // Set the batch size to a suitable number (optional)
-        fetchRequest.fetchBatchSize = 20
-        
-        // Create at least one sort order attribute and type (ascending/descending)
-        let sortDescriptor = NSSortDescriptor(key: "toDo", ascending: false)
-        
-        // Set the sort objects to the fetch request.
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        // Optionally, create a filter/predicate.
-        // The goal of this predicate is to fetch Tasks that are not yet completed.
-        let predicate = NSPredicate(format: "isDone == FALSE")
-        
-        // Set the created predicate to our fetch request.
-        fetchRequest.predicate = predicate
-        
-        // Create the fetched results controller instance with the defined attributes.
-        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-        
-        // Set the delegate of the fetched results controller to the view controller.
-        // with this get notified whenever occurs changes on the data.
-        aFetchedResultsController.delegate = self
-        
-        // Setting the created instance to the view controller instance.
-        _fetchedResultsController = aFetchedResultsController
-        
-        do {
-            // Perform the initial fetch to Core Data.
-            // After this step, the fetched results controller will only retrive more records if neccesary.
-            try _fetchedResultsController!.performFetch()
-        }catch{
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-        
-        return _fetchedResultsController!
-        
-    }
     
 }
 
@@ -300,7 +305,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         // Show two options when a user swipes a cell.
 
         // A option to mark a task completed.
-        let completeAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Complete", handler: { (action: UITableViewRowAction!, indexPath:IndexPath!) -> Void in
+        let completeAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Done", handler: { (action: UITableViewRowAction!, indexPath:IndexPath!) -> Void in
             self.markCompletedTaskIn(indexPath)
         })
         
@@ -312,7 +317,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
     }
  
-    
+ 
     
     
     func markCompletedTaskIn(_ indexPath : IndexPath) {
@@ -345,6 +350,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         }catch{}
     }
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "segue", sender: self)
+    }
+   
     
  }
 

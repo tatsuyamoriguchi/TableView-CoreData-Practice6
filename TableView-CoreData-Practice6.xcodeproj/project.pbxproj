@@ -13,6 +13,7 @@
 		8C2E03A92069A82D00E2E3C6 /* TableView_CoreData_Practice6.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E03A72069A82D00E2E3C6 /* TableView_CoreData_Practice6.xcdatamodeld */; };
 		8C2E03AB2069A82D00E2E3C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E03AA2069A82D00E2E3C6 /* Assets.xcassets */; };
 		8C2E03AE2069A82D00E2E3C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E03AC2069A82D00E2E3C6 /* LaunchScreen.storyboard */; };
+		8C453DC22080504000752251 /* TaskDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C453DC12080504000752251 /* TaskDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		8C2E03AA2069A82D00E2E3C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C2E03AD2069A82D00E2E3C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C2E03AF2069A82D00E2E3C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C453DC12080504000752251 /* TaskDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				8C2E03A02069A82D00E2E3C6 /* AppDelegate.swift */,
 				8C2E03A22069A82D00E2E3C6 /* ViewController.swift */,
 				8C2E03A42069A82D00E2E3C6 /* Main.storyboard */,
+				8C453DC12080504000752251 /* TaskDetailsViewController.swift */,
 				8C2E03AA2069A82D00E2E3C6 /* Assets.xcassets */,
 				8C2E03AC2069A82D00E2E3C6 /* LaunchScreen.storyboard */,
 				8C2E03AF2069A82D00E2E3C6 /* Info.plist */,
@@ -142,6 +145,7 @@
 			files = (
 				8C2E03A32069A82D00E2E3C6 /* ViewController.swift in Sources */,
 				8C2E03A12069A82D00E2E3C6 /* AppDelegate.swift in Sources */,
+				8C453DC22080504000752251 /* TaskDetailsViewController.swift in Sources */,
 				8C2E03A92069A82D00E2E3C6 /* TableView_CoreData_Practice6.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -306,6 +310,7 @@
 				8C2E03B42069A82D00E2E3C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
