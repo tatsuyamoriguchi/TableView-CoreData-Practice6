@@ -29,6 +29,10 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var saveButton: UIButton!
 
     
+    // Index Variable to pass data to TaskDetailControllerView, see prepareForSegue
+    var taskIndex = 0
+    
+    
 /*    @IBAction func edit(_ sender: Any) {
         tableView.isEditing = !tableView.isEditing
         
@@ -349,12 +353,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
         }catch{}
     }
-    
+
+ 
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        taskIndex = indexPath.row
         performSegue(withIdentifier: "segue", sender: self)
+  //      let detailToDo = Task[indexPath.row].toDo
+        
     }
-   
-    
+
  }
 

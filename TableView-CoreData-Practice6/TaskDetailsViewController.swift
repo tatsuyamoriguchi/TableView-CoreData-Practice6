@@ -17,7 +17,7 @@ class TaskDetailsViewController: UIViewController {
     @IBOutlet weak var isUrgBool: UISwitch!
     @IBOutlet weak var isDoneBool: UISwitch!
     @IBAction func backOnPressed(_ sender: Any) {
-        performSegueToReturnBack() 
+        performSegueToReturnBack()
     }
     
    
@@ -27,11 +27,16 @@ class TaskDetailsViewController: UIViewController {
     
     }
     
+    
+    // To hold a value from previous view controller
+    var detailToDo: String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
-        // Do any additional setup after loading the view.
+        toDoText.text = detailToDo
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
