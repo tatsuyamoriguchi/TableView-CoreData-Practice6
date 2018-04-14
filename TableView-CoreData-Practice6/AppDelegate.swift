@@ -21,8 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let controller = self.window!.rootViewController as! ViewController
         
         // Get the reference to the Managed Object Context from the presistent coordinator.
-        let context = self.persistentContainer.viewContext
-        
+        //let context = self.persistentContainer.viewContext
+        _ = self.persistentContainer.viewContext
+
         // Set the managed object context to the View Controller before it gets the view loaded.
         controller.managedObjectContext = self.persistentContainer.viewContext
         
