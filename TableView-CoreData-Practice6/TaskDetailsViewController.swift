@@ -51,11 +51,19 @@ class TaskDetailsViewController: UIViewController,UITextFieldDelegate {
             
             inputAlert()
         } else if let task = task {
+            
+            let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            //let task = Task(context: managedObjectContext)
+            
+            _ = Task(context: managedObjectContext)
+            
             // Configure Quote
             task.toDo = toDoText.text
             task.isImportant = isImpBool.isOn
             task.isUrgent = isUrgBool.isOn
             task.isDone = isDoneBool.isOn
+
+            insertNewTask()
 
             // Go back to ViewController
             performSegueToReturnBack()
@@ -63,6 +71,13 @@ class TaskDetailsViewController: UIViewController,UITextFieldDelegate {
         } else { print("Hmm?? something wrong with @IBAction func saveOnPressed.")}
     }
 
+    func insertNewTask() {
+        
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        view.endEditing(true)
+    }
+
+    
     func inputAlert() {
         let alert = UIAlertController(title: "Alert!", message: "Please Type a To-Do.", preferredStyle: UIAlertControllerStyle.alert)
         
