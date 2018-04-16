@@ -10,7 +10,11 @@ import UIKit
 import CoreData
 
 
-class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, NSFetchedResultsControllerDelegate {
+    
+    private let Segue = "segue"
+    
+    private let persistentContainer = NSPersistentContainer(name: "Tasks")
     
 
     // Declare a variable to be used across this class as Core Data
@@ -26,6 +30,7 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
     //@IBOutlet weak var isDoneInput: UISwitch!
     @IBOutlet weak var tableView: UITableView!
     //@IBOutlet weak var editButton: UIBarButtonItem!
+   
     @IBOutlet weak var saveButton: UIButton!
 
     
@@ -47,9 +52,6 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
 */
-    
-    
-    
     
     // The fetched results controller instance variable with the pretended entity
     // we want to fetch from the Core Data
@@ -118,10 +120,28 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
         
         // For Core Data, initialize managedObjectContext
         managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
+        
+
+        // To dimiss a keyboard when touching else or pressing a return key
+        toDoInput.delegate = self
     }
     
+    // To dimiss a keyboard when touching else.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
+    // To dimiss a keyboard when pressing a return key.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        toDoInput.resignFirstResponder()
+        return true
+    }
+    
+    func dismissKeyboard() {
+        toDoInput.resignFirstResponder()
+        return
+        
+    }
     
    override func viewWillAppear(_ animated: Bool) {
     
@@ -134,8 +154,10 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
     
     @IBAction func addButtonTapped(_ sender: Any) {
         
-        // Show an alert if no toDoInput text.
-        if toDoInput.text == "" {
+        // Show an alert if no toDoInput text
+        //if toDoInput.text == "" {
+        if (toDoInput.text?.trimmingCharacters(in: .whitespaces).isEmpty)! {
+        
           // Alert must be before referencing managedObjectContext to avoid empty data addition.
             inputAlert()
             
@@ -188,8 +210,19 @@ class ViewController: UIViewController, NSFetchedResultsControllerDelegate {
         view.endEditing(true)
     }
 
-
+    // MARK: - Navigation
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        guard let destinationViewController = segue.destination as? TaskDetailsViewController else { return }
+        // Configure View Controller
+        destinationViewController.managedObjectContext = persistentContainer.viewContext
+        if let indexPath = tableView.indexPathForSelectedRow, segue.identifier ==  Segue{
+            // Configure View Controller
+            destinationViewController.task = fetchedResultsController.object(at: indexPath)
+            
+        }
+    }
     
 }
 
