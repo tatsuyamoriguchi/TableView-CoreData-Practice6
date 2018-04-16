@@ -27,6 +27,9 @@ class TaskDetailsViewController: UIViewController,UITextFieldDelegate {
     // MARK: - Declare a Core Data property.
     var managedObjectContext: NSManagedObjectContext?
     
+    // To access a function of ViewController.swift
+    //let  = ViewController()
+    
     
     
     @IBAction func saveOnPressed(_ sender: Any) {
@@ -49,7 +52,8 @@ class TaskDetailsViewController: UIViewController,UITextFieldDelegate {
         //if toDoText.text == "" {
         if (toDoText.text?.trimmingCharacters(in: .whitespaces).isEmpty)! {
             
-            inputAlert()
+            CommonFunctionClass.inputAlert(title: "To-Do is empty!", message: "Please enter To-Do text.", in: self)
+            
         } else if let task = task {
             
             let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -76,22 +80,8 @@ class TaskDetailsViewController: UIViewController,UITextFieldDelegate {
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         view.endEditing(true)
     }
+    
 
-    
-    func inputAlert() {
-        let alert = UIAlertController(title: "Alert!", message: "Please Type a To-Do.", preferredStyle: UIAlertControllerStyle.alert)
-        
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
-            (action) in alert.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-
-    
-    
-    
     // To hold a value from previous view controller
     var detailToDo: String!
     

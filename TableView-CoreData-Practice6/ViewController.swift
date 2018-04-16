@@ -151,7 +151,6 @@ class ViewController: UIViewController, UITextFieldDelegate, NSFetchedResultsCon
     }
 
 
-    
     @IBAction func addButtonTapped(_ sender: Any) {
         
         // Show an alert if no toDoInput text
@@ -159,7 +158,7 @@ class ViewController: UIViewController, UITextFieldDelegate, NSFetchedResultsCon
         if (toDoInput.text?.trimmingCharacters(in: .whitespaces).isEmpty)! {
         
           // Alert must be before referencing managedObjectContext to avoid empty data addition.
-            inputAlert()
+            CommonFunctionClass.inputAlert(title: "To-Do is empty!", message: "Please enter To-Do text.", in: self)
             
         } else {
             let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -192,7 +191,7 @@ class ViewController: UIViewController, UITextFieldDelegate, NSFetchedResultsCon
         
     }
     
-    
+  /*
     func inputAlert() {
         let alert = UIAlertController(title: "Alert!", message: "Please Type a To-Do.", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -203,7 +202,8 @@ class ViewController: UIViewController, UITextFieldDelegate, NSFetchedResultsCon
         self.present(alert, animated: true, completion: nil)
         
     }
-
+*/
+    
     func insertNewTask() {
 
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
@@ -399,3 +399,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
  }
 
+
+public class CommonFunctionClass: UITableViewController {
+
+    class func inputAlert(title: String, message: String, in vc: UIViewController) {
+    
+    let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+        (action) in alert.dismiss(animated: true, completion: nil)
+    }))
+        vc.present(alert, animated: true, completion: nil)
+    //self.present(alert, animated: true, completion: nil)
+    }
+
+
+}
