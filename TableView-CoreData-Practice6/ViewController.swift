@@ -271,23 +271,22 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
          if task.isImportant == true && task.isUrgent == true {
         
             cell.textLabel?.text = "🔥\(task.toDo!)"
-            cell.textLabel?.textColor = UIColor.red
-
+            cell.textLabel?.textColor = UIColor.black
+            
         }else if task.isImportant == true && task.isUrgent == false {
-        
-         cell.textLabel?.text = task.toDo!
-         cell.textLabel?.textColor = UIColor.red
-         
+
+            cell.textLabel?.text = task.toDo!
+            cell.textLabel?.textColor = UIColor.black
+            
         }else if task.isImportant == false && task.isUrgent == true {
         
             cell.textLabel?.text = "🔥\(task.toDo!)"
-            cell.textLabel?.textColor = UIColor.black
+              cell.textLabel?.textColor = UIColor.gray
             
         }else{
         
             cell.textLabel?.text = task.toDo
-            cell.textLabel?.textColor = UIColor.black
-
+            cell.textLabel?.textColor = UIColor.gray
         }
  
             
@@ -411,6 +410,4 @@ public class CommonFunctionClass: UITableViewController {
         vc.present(alert, animated: true, completion: nil)
     //self.present(alert, animated: true, completion: nil)
     }
-
-
 }
