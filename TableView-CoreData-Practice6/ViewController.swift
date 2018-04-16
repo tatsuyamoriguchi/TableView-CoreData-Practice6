@@ -266,7 +266,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         // Update the cell label with the task toDo
         //cell.textLabel!.text = task.toDo
             
-        
+   /*
         //Display font in red for Important task, and 🔥 for urgent ones.
          if task.isImportant == true && task.isUrgent == true {
         
@@ -288,8 +288,24 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = task.toDo
             cell.textLabel?.textColor = UIColor.gray
         }
- 
+ */
+        switch task.isImportant {
+
+        case true where task.isUrgent == true:
+            cell.textLabel?.text = "🔥\(task.toDo!)"
+            cell.textLabel?.textColor = UIColor.black
+        case true where task.isUrgent == false:
+            cell.textLabel?.text = task.toDo
+            cell.textLabel?.textColor = UIColor.black
+        case false where task.isUrgent == true:
+            cell.textLabel?.text = "🔥\(task.toDo!)"
+            cell.textLabel?.textColor = UIColor.gray
+        default:
+            cell.textLabel?.text = task.toDo
+            cell.textLabel?.textColor = UIColor.gray
             
+        }
+        
         return cell
     
     }
